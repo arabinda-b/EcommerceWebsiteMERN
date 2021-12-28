@@ -7,7 +7,7 @@ import {
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
   CLEAR_ERRORS,
-} from "../constants/productCanstants";
+} from "../constants/productConstants";
 
 export const getProducts =
   (keyword = "",currentPage=1,price=[0,25000],category,ratings=0) =>
