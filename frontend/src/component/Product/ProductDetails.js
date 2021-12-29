@@ -19,19 +19,13 @@ const ProductDetails = () => {
     (state) => state.productDetails
   );
 
-  useEffect(
-    () => {
-      if (error) {
-        alert.error(error);
-        dispatch(clearErrors);
-      }
-      dispatch(getProductDetails(productId));
-    },
-    [dispatch],
-    productId,
-    error,
-    alert
-  );
+  useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors);
+    }
+    dispatch(getProductDetails(productId));
+  }, [dispatch, productId, error, alert]);
 
   const options = {
     edit: false,
