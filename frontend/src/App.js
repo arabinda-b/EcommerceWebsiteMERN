@@ -12,12 +12,15 @@ import Products from "./component/Product/Products.js";
 import Search from "./component/Product/Search.js";
 import LoginSignup from "./component/User/LoginSignup";
 import store from "./store.js";
-import { loadUser } from "./actions/userAction";
+import { loadUser, updatePassword } from "./actions/userAction";
 import UserOptions from "./component/layout/Header/UserOptions.js";
 import { useSelector } from "react-redux";
 import Profile from "./component/User/Profile.js";
 import ProtectedRoute from "./component/Route/ProtectedRoute.js";
 import UpdateProfile from "./component/User/UpdateProfile.js";
+import UpdatePassword from "./component/User/UpdatePassword.js";
+import ForgotPassword from "./component/User/ForgotPassword.js";
+import ResetPassword from "./component/User/ResetPassword.js";
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -41,7 +44,7 @@ function App() {
         <Route exact path="/products" element={<Products />} />
         <Route path="/products/:keyword" element={<Products />} />
         <Route exact path="/search" element={<Search />} />
-
+        
         <Route exact path="/account" element={
             <ProtectedRoute>
               <Profile />
@@ -54,6 +57,16 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route exact path="/password/update" element={
+            <ProtectedRoute>
+              <UpdatePassword />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route exact path="/password/forgot" element={<ForgotPassword />} />
+        <Route exact path="/password/reset/:token" element={<ResetPassword />} />
+
         <Route exact path="/login" element={<LoginSignup />} />
       </Routes>
       <Footer />
