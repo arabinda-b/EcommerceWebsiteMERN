@@ -9,8 +9,9 @@ import {
   CLEAR_ERRORS,
 } from "../constants/productConstants";
 
+// Get all products
 export const getProducts =
-  (keyword = "",currentPage=1,price=[0,25000],category,ratings=0) =>
+  (keyword = "", currentPage = 1, price = [0, 25000], category, ratings = 0) =>
   async (dispatch) => {
     try {
       dispatch({
@@ -33,6 +34,7 @@ export const getProducts =
     }
   };
 
+// Get Product details
 export const getProductDetails = (id) => async (dispatch) => {
   try {
     dispatch({
@@ -51,6 +53,7 @@ export const getProductDetails = (id) => async (dispatch) => {
   }
 };
 
+// Clear errors
 export const clearErrors = () => async (dispatch) => {
   dispatch({
     type: CLEAR_ERRORS,
