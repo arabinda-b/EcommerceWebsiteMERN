@@ -14,9 +14,9 @@ const Footer = () => {
             </div>
 
             <div className="midFooter">
-                <h1>6PP.</h1>
-                <p>High Quality is our first priority</p>
-                <p>Copyrights 2021 &copy; ArabindaBehera</p>
+                <h1>Odia NRI Auromika</h1>
+                <p>Quality products ensured</p>
+                <p>Copyrights 2022 &copy; ArabindaBehera</p>
             </div>
 
             <div className="rightFooter">
