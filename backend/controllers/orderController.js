@@ -69,21 +69,23 @@ exports.getAllOrders = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// Update order status
+// Update order status -- admin
 exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
   const order = await Order.findById(req.params.id);
   if (!order) {
     return next(new ErrorHandler("Order not found with this Id", 404));
   }
-  if (order.paymentInfo.orderStatus === "Delivered") {
+  if (order.orderStatus === "Delivered") {
     return next(
       new ErrorHandler("This order has been already delivered.", 400)
     );
   }
-  order.orderItems.forEach(async (ord) => {
-    await updateStock(ord.Product, ord.quantity);
-  });
-  order.paymentInfo.orderStatus = req.body.status;
+  if (req.body.status === "Shipped") {
+    order.orderItems.forEach(async (o) => {
+      await updateStock(o.product, o.quantity);
+    });
+  }
+  order.orderStatus = req.body.status;
   if (req.body.status === "Delivered") {
     order.deliveredAt = Date.now();
   }
