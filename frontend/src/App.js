@@ -40,6 +40,9 @@ import ProcessOrder from "./component/Admin/ProcessOrder";
 import UserList from "./component/Admin/UserList";
 import UpdateUser from "./component/Admin/UpdateUser";
 import ProductReviews from "./component/Admin/ProductReviews";
+import Contact from "./component/layout/Contact/Contact";
+import About from "./component/layout/About/About";
+import NotFound from "./component/layout/Not Found/NotFound";
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -60,12 +63,16 @@ function App() {
     getStripeApiKey();
   }, []);
 
+  window.addEventListener("contextmenu", (e) => e.preventDefault());
+
   return (
     <Router>
       <Header />
       {isAuthenticated && <UserOptions user={user} />}
       <Routes>
         <Route exact path="/" element={<Home />} />
+        <Route exact path="/contact" element={<Contact />} />
+        <Route exact path="/about" element={<About />} />
         <Route exact path="/product/:id" element={<ProductDetails />} />
         <Route exact path="/products" element={<Products />} />
         <Route path="/products/:keyword" element={<Products />} />
@@ -263,7 +270,9 @@ function App() {
             </ProtectedRoute>
           }
         />
-        
+
+        <Route path="*" element={<NotFound />} />
+
       </Routes>
       <Footer />
     </Router>
