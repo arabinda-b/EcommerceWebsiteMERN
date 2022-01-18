@@ -1,21 +1,22 @@
 const app = require("./app");
 
-const dotenv = require("dotenv");
 const cloudinary = require("cloudinary");
 
 const connectDB = require("./config/database");
 
-//Handling Uncaught Exception
+// Handling Uncaught Exception
 process.on("uncaughtException", (err) => {
   console.log(`Error: ${err.message}`);
   console.log("Shutting down the server due to uncaught Exception");
   process.exit(1);
 });
 
-//Config
-dotenv.config({ path: "backend/config/config.env" });
+// Config - use config file only while development
+if (process.env.NODE_ENV !== "PRODUCTION") {
+  require("dotenv").config({ path: "backend/config/config.env" });
+}
 
-//Connecting to database
+// Connecting to database
 connectDB();
 
 cloudinary.config({
@@ -28,7 +29,7 @@ const server = app.listen(process.env.PORT, () => {
   console.log(`Server is running on http://localhost:${process.env.PORT}`);
 });
 
-//Unhandled Promize Rejection
+// Unhandled Promize Rejection
 process.on("unhandledRejection", (err) => {
   console.log(`Error: ${err.message}`);
   console.log("Shutting down the server due to unhandled Promise Rejection");
