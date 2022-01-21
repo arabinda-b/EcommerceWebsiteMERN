@@ -5,6 +5,9 @@ import {
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
+  VERIFY_REGISTER_REQUEST,
+  VERIFY_REGISTER_SUCCESS,
+  VERIFY_REGISTER_FAIL,
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
   LOAD_USER_FAIL,
@@ -38,6 +41,37 @@ import {
 } from "../constants/userConstants.js";
 import axios from "axios";
 
+// Register user
+export const register = (userData) => async (dispatch) => {
+  try {
+    dispatch({ type: REGISTER_REQUEST });
+    const config = { headers: { "Content-Type": "multipart/form-data" } };
+    const { data } = await axios.post(`/api/v1/register`, userData, config);
+    dispatch({ type: REGISTER_SUCCESS, payload: data.message });
+  } catch (error) {
+    dispatch({ type: REGISTER_FAIL, payload: error.response.data.message });
+  }
+};
+
+// Verify Register
+export const verifyRegister = (token, password) => async (dispatch) => {
+  try {
+    dispatch({ type: VERIFY_REGISTER_REQUEST });
+    const config = { headers: { "Content-Type": "application/json" } };
+    const { data } = await axios.put(
+      `/api/v1/register/verify/${token}`,
+      password,
+      config
+    );
+    dispatch({ type: VERIFY_REGISTER_SUCCESS, payload: data.user });
+  } catch (error) {
+    dispatch({
+      type: VERIFY_REGISTER_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
 // Login user
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -51,18 +85,6 @@ export const login = (email, password) => async (dispatch) => {
     dispatch({ type: LOGIN_SUCCESS, payload: data.user });
   } catch (error) {
     dispatch({ type: LOGIN_FAIL, payload: error.response.data.message });
-  }
-};
-
-// Register user
-export const register = (userData) => async (dispatch) => {
-  try {
-    dispatch({ type: REGISTER_REQUEST });
-    const config = { headers: { "Content-Type": "multipart/form-data" } };
-    const { data } = await axios.post(`/api/v1/register`, userData, config);
-    dispatch({ type: REGISTER_SUCCESS, payload: data.user });
-  } catch (error) {
-    dispatch({ type: REGISTER_FAIL, payload: error.response.data.message });
   }
 };
 
@@ -200,9 +222,7 @@ export const updateUser = (id, userData) => async (dispatch) => {
 export const deleteUser = (id) => async (dispatch) => {
   try {
     dispatch({ type: DELETE_USER_REQUEST });
-    const { data } = await axios.delete(
-      `/api/v1/admin/user/${id}`,
-    );
+    const { data } = await axios.delete(`/api/v1/admin/user/${id}`);
     dispatch({ type: DELETE_USER_SUCCESS, payload: data });
   } catch (error) {
     dispatch({

@@ -16,6 +16,9 @@ const LoginSignup = () => {
   const { error, loading, isAuthenticated } = useSelector(
     (state) => state.user
   );
+  const { error: registerError, message } = useSelector(
+    (state) => state.register
+  );
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -31,7 +34,7 @@ const LoginSignup = () => {
     password: "",
   });
   const { name, email, password } = user;
-  const [avatar, setAvatar] = useState();
+  const [avatar, setAvatar] = useState("");
   const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
 
   const loginSubmit = (e) => {
@@ -64,17 +67,26 @@ const LoginSignup = () => {
     }
   };
 
-  const redirect = location.search ? `/${location.search.split("=")[1]}` : "/account";
+  const redirect = location.search
+    ? `/${location.search.split("=")[1]}`
+    : "/account";
 
   useEffect(() => {
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
     }
+    if (registerError) {
+      alert.error(registerError);
+      dispatch(clearErrors());
+    }
+    if (message) {
+      alert.success(message);
+    }
     if (isAuthenticated) {
       navigate(redirect);
     }
-  }, [dispatch, error, alert, navigate, isAuthenticated, redirect]);
+  }, [dispatch, error, alert, navigate, isAuthenticated, redirect, message, registerError]);
 
   const switchTabs = (e, tab) => {
     if (tab === "login") {

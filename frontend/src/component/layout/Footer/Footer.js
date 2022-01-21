@@ -14,16 +14,16 @@ const Footer = () => {
             </div>
 
             <div className="midFooter">
-                <h1>Odia NRI Auromika</h1>
+                <h1>Auro Zone</h1>
                 <p>Quality products ensured</p>
                 <p>Copyrights 2022 &copy; ArabindaBehera</p>
             </div>
 
             <div className="rightFooter">
                 <h4>Follow Us</h4>
-                <a href="http://instagram.com/abehera">Instagram</a>
-                <a href="http://youtube.com/abehera">Youtube</a>
-                <a href="http://facebook.com/abehera">Facebook</a>
+                <a href="http://instagram.com">Instagram</a>
+                <a href="http://youtube.com">Youtube</a>
+                <a href="http://facebook.com">Facebook</a>
             </div>
         </footer>
     );

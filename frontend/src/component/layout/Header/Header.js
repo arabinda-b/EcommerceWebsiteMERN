@@ -1,11 +1,12 @@
 import React from "react";
 import { ReactNavbar } from "overlay-navbar";
-import logo from "../../../images/logo.png";
+import logo from "../../../images/Logo_AuroZone.png";
 
 const options =  {
+    burgerColor: "gray",
     burgerColorHover: "#eb4034",
     logo,
-    logoWidth: "20vmax",
+    logoWidth: "5vmax",
     navColor1: "white",
     logoHoverSize: "10px",
     logoHoverColor: "#eb4034",
@@ -13,6 +14,7 @@ const options =  {
     link2Text: "Products",
     link3Text: "Contact",
     link4Text: "About",
+    logoUrl: "/",
     link1Url: "/",
     link2Url: "/products",
     link3Url: "/contact",

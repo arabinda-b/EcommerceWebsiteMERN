@@ -67,8 +67,8 @@ const ConfirmOrder = () => {
                       {item.name}
                     </Link>{" "}
                     <span>
-                      {item.quantity} X ₹{item.price} ={" "}
-                      <b>₹{item.price * item.quantity}</b>
+                      {item.quantity} X ${item.price} ={" "}
+                      <b>${item.price * item.quantity}</b>
                     </span>
                   </div>
                 ))}
@@ -82,22 +82,22 @@ const ConfirmOrder = () => {
             <div>
               <div>
                 <p>Subtotal:</p>
-                <span>₹{subtotal}</span>
+                <span>${subtotal}</span>
               </div>
               <div>
                 <p>Shipping Charges:</p>
-                <span>₹{shippingCharges}</span>
+                <span>${shippingCharges}</span>
               </div>
               <div>
                 <p>Taxes:</p>
-                <span>₹{tax}</span>
+                <span>${tax}</span>
               </div>
             </div>
             <div className="orderSummaryTotal">
               <p>
                 <b>Total:</b>
               </p>
-              <span>₹{totalPrice}</span>
+              <span>${totalPrice}</span>
             </div>
             <button onClick={proceedToPayment}>Proceed to Payment</button>
           </div>

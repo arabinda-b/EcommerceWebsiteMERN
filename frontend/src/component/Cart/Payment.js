@@ -109,8 +109,9 @@ const Payment = () => {
         <CheckoutSteps activeStep={2} />
       </div>
       <div className="paymentContainer">
+        <Typography>Card Info</Typography>
+        <p>Use 4242 4242 4242 4242 for test</p>
         <form className="paymentForm" onSubmit={(e) => submitHandler(e)}>
-          <Typography>Card Info</Typography>
           <div>
             <CreditCardIcon />
             <CardNumberElement className="paymentInput" />
@@ -125,7 +126,7 @@ const Payment = () => {
           </div>
           <input
             type="submit"
-            value={`Pay - ₹${orderInfo && orderInfo.totalPrice}`}
+            value={`Pay - $${orderInfo && orderInfo.totalPrice}`}
             ref={payBtn}
             className="paymentFormBtn"
           />

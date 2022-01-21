@@ -5,6 +5,9 @@ import {
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
+  VERIFY_REGISTER_REQUEST,
+  VERIFY_REGISTER_SUCCESS,
+  VERIFY_REGISTER_FAIL,
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
   LOAD_USER_FAIL,
@@ -41,18 +44,48 @@ import {
   CLEAR_ERRORS,
 } from "../constants/userConstants.js";
 
+export const registerReducer = (state = {}, action) => {
+  switch (action.type) {
+    case REGISTER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case REGISTER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        message: action.payload,
+      };
+    case REGISTER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+    default:
+      return state;
+  }
+}
+
 export const userReducer = (state = { user: {} }, action) => {
   switch (action.type) {
     case LOGIN_REQUEST:
-    case REGISTER_REQUEST:
     case LOAD_USER_REQUEST:
+    case VERIFY_REGISTER_REQUEST:
       return {
         loading: true,
         isAuthenticated: false,
       };
     case LOGIN_SUCCESS:
-    case REGISTER_SUCCESS:
     case LOAD_USER_SUCCESS:
+    case VERIFY_REGISTER_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -66,7 +99,7 @@ export const userReducer = (state = { user: {} }, action) => {
         user: null,
       };
     case LOGIN_FAIL:
-    case REGISTER_FAIL:
+    case VERIFY_REGISTER_FAIL:
       return {
         ...state,
         loading: false,
@@ -79,7 +112,7 @@ export const userReducer = (state = { user: {} }, action) => {
         loading: false,
         isAuthenticated: false,
         user: null,
-        error: action.payload,
+        loadUserError: action.payload,
       };
     case LOGOUT_FAIL:
       return {
@@ -120,7 +153,7 @@ export const profileReducer = (state = {}, action) => {
         ...state,
         loading: false,
         isDeleted: action.payload.success,
-        message: action.payload.message
+        message: action.payload.message,
       };
     case UPDATE_PROFILE_FAIL:
     case UPDATE_PASSWORD_FAIL:

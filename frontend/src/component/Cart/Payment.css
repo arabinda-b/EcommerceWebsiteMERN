@@ -10,19 +10,23 @@
   margin: 2vmax;
 }
 
-.paymentForm {
-  width: 22%;
-  height: 100%;
-}
-
-.paymentForm > p {
+.paymentContainer > p:first-of-type {
   font: 400 2vmax "Roboto";
   color: rgba(0, 0, 0, 0.753);
   border-bottom: 1px solid rgba(0, 0, 0, 0.13);
   padding: 1vmax 0;
   text-align: center;
-  width: 50%;
+  width: 22%;
   margin: auto;
+}
+
+.paymentContainer > p:last-of-type {
+  font: 400 1vmax "Roboto";
+}
+
+.paymentForm {
+  width: 22%;
+  height: 100%;
 }
 
 .paymentForm > div {

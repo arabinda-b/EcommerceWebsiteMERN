@@ -43,6 +43,7 @@ import ProductReviews from "./component/Admin/ProductReviews";
 import Contact from "./component/layout/Contact/Contact";
 import About from "./component/layout/About/About";
 import NotFound from "./component/layout/Not Found/NotFound";
+import VerifyRegister from "./component/User/VerifyRegister";
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -114,6 +115,12 @@ function App() {
         />
 
         <Route exact path="/login" element={<LoginSignup />} />
+
+        <Route
+          exact
+          path="/register/verify/:token"
+          element={<VerifyRegister />}
+        />
 
         <Route exact path="/cart" element={<Cart />} />
 
@@ -272,7 +279,6 @@ function App() {
         />
 
         <Route path="*" element={<NotFound />} />
-
       </Routes>
       <Footer />
     </Router>

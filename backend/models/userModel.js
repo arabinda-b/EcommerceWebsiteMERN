@@ -37,10 +37,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "user",
   },
+  status: {
+    type: String,
+    default: "unverified"
+  },
   createdAt: {
     type: Date,
     default: Date.now,
   },
+  verifyEmailToken: String,
+  verifyEmailExpire: Date,
   resetPasswordToken: String,
   resetPasswordExpire: Date,
 });
@@ -76,6 +82,19 @@ userSchema.methods.getResetPasswordToken = function () {
     .digest("hex");
   this.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
   return resetToken;
+};
+
+// Generating Verify EmailToken
+userSchema.methods.getVerifyEmailToken = function () {
+  // Generatiing Token
+  const verifyToken = crypto.randomBytes(20).toString("hex");
+  // Hashing and add to userSchema
+  this.verifyEmailToken = crypto
+    .createHash("sha256")
+    .update(verifyToken)
+    .digest("hex");
+  this.verifyEmailExpire = Date.now() + 60 * 60 * 1000;
+  return verifyToken;
 };
 
 module.exports = mongoose.model("User", userSchema);

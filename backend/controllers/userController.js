@@ -8,23 +8,88 @@ const cloudinary = require("cloudinary");
 
 // Register a User
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
-  const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-    folder: "avatars",
-    width: 150,
-    crop: "scale",
-  });
-
+  let myCloud = null;
+  if (!req.body.avatar) {
+    req.body.avatar =
+      "https://res.cloudinary.com/dlmx5pu7k/image/upload/v1642615330/fixed_pics/Profile_dhqdvx.png";
+  }
+  if (req.body.avatar) {
+    myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+      folder: "avatars",
+      width: 150,
+      crop: "scale",
+    });
+  }
   const { name, email, password } = req.body;
   const user = await User.create({
     name,
     email,
     password,
     avatar: {
-      public_id: myCloud.public_id,
-      url: myCloud.secure_url,
+      public_id: req.body.avatar ? myCloud.public_id : "",
+      url: req.body.avatar ? myCloud.secure_url : "",
     },
   });
-  sendToken(user, 201, res);
+
+  // Get Verify Email Token
+  const verifyToken = user.getVerifyEmailToken();
+  await user.save({ validateBeforeSave: false });
+  let verifyTokenUrl = "";
+  if (process.env.NODE_ENV !== "PRODUCTION") {
+    verifyTokenUrl = `${process.env.FRONTEND_URL}/register/verify/${verifyToken}`;
+  } else {
+    verifyTokenUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/register/verify/${verifyToken}`;
+  }
+
+  const message = `Please verify your email by clicking the link :- \n\n ${verifyTokenUrl} \n\nIf you have not requested this email then, please ignore it.`;
+  try {
+    await sendEmail({
+      email: req.body.email,
+      subject: `Ecommerce Email Verification`,
+      message,
+    });
+    res.status(200).json({
+      success: true,
+      message: `Please check your email ${user.email} for verification link.`,
+    });
+  } catch (error) {
+    await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+    await user.remove();
+    return next(new ErrorHandler("Invalid Email address", 401));
+  }
+  //sendToken(user, 201, res);
+});
+
+// Verify Registration
+exports.verifyRegister = catchAsyncErrors(async (req, res, next) => {
+  // Creating token hash
+  const verifyEmailToken = crypto
+    .createHash("sha256")
+    .update(req.params.token)
+    .digest("hex");
+  const user = await User.findOne({
+    verifyEmailToken,
+    verifyEmailExpire: { $gt: Date.now() },
+  }).select("+password");
+  if (!user) {
+    return next(
+      new ErrorHandler(
+        "Email verification token is invalid or has been expired.",
+        400
+      )
+    );
+  }
+  const isPasswordMatched = await user.comparePassword(req.body.password);
+  if (!isPasswordMatched) {
+    return next(new ErrorHandler("Invalid email or password", 401));
+  }
+  user.status = "verified";
+  user.verifyEmailToken = undefined;
+  user.verifyEmailExpire = undefined;
+  await user.save();
+  sendToken(user, 200, res);
 });
 
 // Login User
@@ -40,6 +105,9 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   const isPasswordMatched = await user.comparePassword(password);
   if (!isPasswordMatched) {
     return next(new ErrorHandler("Invalid email or password", 401));
+  };
+  if (user.status === "unverified") {
+    return next(new ErrorHandler("Email has not been verified yet.", 401));
   } else {
     sendToken(user, 200, res);
   }
@@ -66,10 +134,15 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
   // Get Reset Password Token
   const resetToken = user.getResetPasswordToken();
   await user.save({ validateBeforeSave: false });
-  //const resetPasswordUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
-  const resetPasswordUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/password/reset/${resetToken}`;
+  let resetPasswordUrl = "";
+  if (process.env.NODE_ENV !== "PRODUCTION") {
+    resetPasswordUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
+  } else {
+    resetPasswordUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/password/reset/${resetToken}`;
+  }
+
   const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
   try {
     await sendEmail({

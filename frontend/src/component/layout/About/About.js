@@ -3,6 +3,8 @@ import "./About.css";
 import { Button, Typography, Avatar } from "@mui/material";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import logo from "../../../images/Logo_AuroZone.png";
+
 const About = () => {
   const visitInstagram = () => {
     window.location = "https://www.instagram.com/auromika_parida";
@@ -18,16 +20,16 @@ const About = () => {
           <div>
             <Avatar
               style={{ width: "10vmax", height: "10vmax", margin: "2vmax 0" }}
-              src="https://res.cloudinary.com/dlmx5pu7k/image/upload/v1642527074/My%20Pics/mypic_ayzekw.jpg"
+              src={logo}
               alt="Founder"
             />
-            <Typography>Arabinda Behera and Auromika Parida</Typography>
+            <Typography>Auro Zone E-Commerce</Typography>
             <Button onClick={visitInstagram} color="primary">
               Visit Instagram
             </Button>
             <span>
               This is a sample wesbite made by Arabinda Behera. Only with the
-              purpose to learn MERN Stack and create a website for the youtube channel - Odia NRI Vlogger Auromika.
+              purpose to learn MERN Stack and create a fully functional E-Commerce website.
             </span>
           </div>
           <div className="aboutSectionContainer2">

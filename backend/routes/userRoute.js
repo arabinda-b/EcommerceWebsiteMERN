@@ -12,6 +12,7 @@ const {
   getSingleUser,
   updateUserRole,
   deleteUser,
+  verifyRegister,
 } = require("../controllers/userController");
 
 const { isAuthenticatedUser, authorizedRoles } = require("../middleware/auth");
@@ -19,6 +20,8 @@ const { isAuthenticatedUser, authorizedRoles } = require("../middleware/auth");
 const router = express.Router();
 
 router.route("/register").post(registerUser);
+
+router.route("/register/verify/:token").put(verifyRegister);
 
 router.route("/login").post(loginUser);
 
