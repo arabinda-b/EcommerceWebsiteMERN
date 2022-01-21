@@ -86,7 +86,15 @@
 }
 
 .instagramSvgIcon {
-  color: rgb(144, 81, 202);
+  color: rgb(205, 173, 235);
+}
+
+.linkedinSvgIcon {
+  color: rgb(12, 26, 216);
+}
+
+.facebookSvgIcon {
+  color: rgb(10, 189, 243);
 }
 
 @media screen and (max-width: 600px) {

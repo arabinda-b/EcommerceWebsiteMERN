@@ -8,7 +8,7 @@ const Footer = () => {
         <footer id="footer">
             <div className="leftFooter">
                 <h4>DOWNLOAD OUR APP</h4>
-                <p>Download App for Android and IOS mobile phones</p>
+                <p>Coming soon on Android and IOS mobile phones</p>
                 <img src={playStore} alt="playstore" />
                 <img src={appStore} alt="appstore" />
             </div>
@@ -20,10 +20,9 @@ const Footer = () => {
             </div>
 
             <div className="rightFooter">
-                <h4>Follow Us</h4>
-                <a href="http://instagram.com">Instagram</a>
-                <a href="http://youtube.com">Youtube</a>
-                <a href="http://facebook.com">Facebook</a>
+                <h4>Follow Me</h4>
+                <a href="https://www.linkedin.com/in/arabinda-behera">LinkedIn</a>
+                <a href="https://www.facebook.com/arvind.behera.9">Facebook</a>
             </div>
         </footer>
     );
